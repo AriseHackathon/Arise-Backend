@@ -1,7 +1,7 @@
 const express = require("express");
 const database = require("./connect");
 const { ObjectId } = require("mongodb");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Create router instance
 let userRoutes = express.Router();

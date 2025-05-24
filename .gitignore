@@ -5,3 +5,25 @@ npm-debug.log
 .DS_Store
 config.env
 config.env
+
+
+# Environment variables
+config.env
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage/

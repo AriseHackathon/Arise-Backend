@@ -8,9 +8,12 @@
     "mongodb": "^6.16.0"
   },
 
-  "scripts": {
-    "start": "node server.js"
-  }
+  
+    "scripts": {
+      "build": "npm rebuild bcrypt --build-from-source",
+      "start": "node server.js"
+    }
+  
 }
 
 

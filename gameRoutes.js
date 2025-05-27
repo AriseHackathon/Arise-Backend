@@ -6,7 +6,7 @@ require("dotenv").config({path: "./config.env"})
 
 let gameRoutes = express.Router()
 
-gameRoutes.route("/games").get(async (request, response) => {
+gameRoutes.route("/games").get(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let query = {}
@@ -38,7 +38,7 @@ gameRoutes.route("/games").get(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/status/:status").get(async (request, response) => {
+gameRoutes.route("/games/status/:status").get(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let status = request.params.status
@@ -51,7 +51,7 @@ gameRoutes.route("/games/status/:status").get(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/stats/overview").get(async (request, response) => {
+gameRoutes.route("/games/stats/overview").get(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       
@@ -82,7 +82,7 @@ gameRoutes.route("/games/stats/overview").get(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/:id").get(async (request, response) => {
+gameRoutes.route("/games/:id").get(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let data = await db.collection("games").findOne({ _id: new ObjectId(request.params.id) })
@@ -97,7 +97,7 @@ gameRoutes.route("/games/:id").get(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games").post(async (request, response) => {
+gameRoutes.route("/games").post(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let mongoObject = {
@@ -124,7 +124,7 @@ gameRoutes.route("/games").post(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/:id").put(async (request, response) => {
+gameRoutes.route("/games/:id").put(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let mongoObject = {
@@ -154,7 +154,7 @@ gameRoutes.route("/games/:id").put(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/:id/join").post(async (request, response) => {
+gameRoutes.route("/games/:id/join").post(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let gameId = new ObjectId(request.params.id)
@@ -190,7 +190,7 @@ gameRoutes.route("/games/:id/join").post(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/:id/leave").post(async (request, response) => {
+gameRoutes.route("/games/:id/leave").post(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let gameId = new ObjectId(request.params.id)
@@ -211,7 +211,7 @@ gameRoutes.route("/games/:id/leave").post(async (request, response) => {
    }
 })
 
-gameRoutes.route("/games/:id").delete(async (request, response) => {
+gameRoutes.route("/games/:id").delete(verifyToken, async (request, response) => {
    try {
       let db = database.getDb()
       let data = await db.collection("games").deleteOne({ _id: new ObjectId(request.params.id) })

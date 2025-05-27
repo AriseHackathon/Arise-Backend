@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(users);
-app.use(games); // Add this line
-// app.use(posts); // Uncomment if you have post routes
+app.use(games); 
+app.use(posts)
 
 // Health check endpoint
 app.get('/health', (req, res) => {

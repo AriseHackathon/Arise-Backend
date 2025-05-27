@@ -9,7 +9,6 @@ require("dotenv").config({path: "./config.env"})
 //Retrive all data from database
 let postRoutes = express.Router()
 
- // Add try-catch blocks to your routes, example:
 postRoutes.route("/posts").get(async (request, response) => {
   try {
     let db = database.getDb()

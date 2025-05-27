@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://127.0.0.1:5500','https://games-grid.netlify.app'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:5500'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.use(users);
-app.use(games); // Add this line
-// app.use(posts); // Uncomment if you have post routes
+app.use(games); 
+app.use(posts)
 
 // Health check endpoint
 app.get('/health', (req, res) => {

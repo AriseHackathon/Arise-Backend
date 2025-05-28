@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://arise-backend-m9zz.onrender.com/'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://arise-backend-m9zz.onrender.com/', 'https://games-grid.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

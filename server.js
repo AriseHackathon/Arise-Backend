@@ -62,7 +62,7 @@ app.use((error, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  connect.connectToServer();
+ await connect.connectToServer();
   console.log(`Server is running on port: ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
 });

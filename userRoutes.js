@@ -183,7 +183,13 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
+<<<<<<< HEAD
     console.log('Searching for user with email:', email.toLowerCase().trim());
+=======
+
+    console.log('Searching for user with email:', email.toLowerCase().trim());
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
     const user = await db.collection("users").findOne({ email: email.toLowerCase().trim() });
 
     if (!user) {
@@ -194,7 +200,14 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
+<<<<<<< HEAD
     console.log('User found, comparing passwords');
+=======
+
+    console.log('User found, comparing passwords');
+
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
     const isPasswordValid = await bcrypt.compare(password, user.password);
     
     if (!isPasswordValid) {
@@ -205,6 +218,10 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
     console.log('Password valid, generating JWT token');
     
     // Check if SECRETKEY exists
@@ -216,6 +233,10 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
     // Generate JWT token
     const token = jwt.sign(
       { 
@@ -229,6 +250,10 @@ userRoutes.route("/users/login").post(async (request, response) => {
 
     console.log('JWT token generated successfully');
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
     // Return success with user data AND token
     response.json({ 
       success: true, 
@@ -266,4 +291,12 @@ userRoutes.route("/users/login").post(async (request, response) => {
     }
   }
 });
+<<<<<<< HEAD
 module.exports = userRoutes;
+=======
+
+
+
+module.exports = userRoutes;
+
+>>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445

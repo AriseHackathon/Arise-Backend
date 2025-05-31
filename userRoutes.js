@@ -266,10 +266,4 @@ userRoutes.route("/users/login").post(async (request, response) => {
     }
   }
 });
-<<<<<<< HEAD
 module.exports = userRoutes;
-=======
-
-
-module.exports = userRoutes;
->>>>>>> b5a17a860446347e956d771db112e46510caa887

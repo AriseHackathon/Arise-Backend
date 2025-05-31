@@ -17,22 +17,14 @@ postRoutes.route("/posts").get(async (request, response) => {
     if (data.length > 0) {
        response.json(data)
     } else {
-<<<<<<< HEAD
        response.json([]) 
-=======
-       response.json([]) // Return empty array instead of throwing error
->>>>>>> b5a17a860446347e956d771db112e46510caa887
     }
   } catch (error) {
     response.status(500).json({ error: error.message })
   }
 })
 
-<<<<<<< HEAD
  //Retrive one data 
-=======
- //Retrive one data from database
->>>>>>> b5a17a860446347e956d771db112e46510caa887
 
 
 postRoutes.route("/posts/:id").get( async (request,response) => {

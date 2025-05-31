@@ -3,6 +3,7 @@ const database = require("./connect");
 const { ObjectId } = require("mongodb");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { authenticateToken, authenticateUser } = require('./auth');
 require("dotenv").config({path: "./config.env"});
 
 // Create router instance
@@ -10,8 +11,22 @@ let userRoutes = express.Router();
 
 const SALT_ROUNDS = 10;
 
+// Token verification route
+userRoutes.route("/users/verify-token").get(authenticateToken, (request, response) => {
+  // If middleware passes, token is valid
+  response.json({ 
+    success: true, 
+    message: "Token is valid",
+    user: {
+      userId: request.user.userId,
+      email: request.user.email,
+      name: request.user.name
+    }
+  });
+});
+
 // Get all users (protected route)
-userRoutes.route("/users").get( async (request, response) => {
+userRoutes.route("/users").get(authenticateToken, async (request, response) => {
   try {
     let db = database.getDb();
     let data = await db.collection("users").find({}).project({ password: 0 }).toArray();
@@ -28,7 +43,7 @@ userRoutes.route("/users").get( async (request, response) => {
 });
 
 // Get single user by ID (protected route)
-userRoutes.route("/users/:id").get( async (request, response) => {
+userRoutes.route("/users/:id").get(authenticateToken, async (request, response) => {
   try {
     let db = database.getDb();
     let data = await db.collection("users").findOne(
@@ -47,7 +62,7 @@ userRoutes.route("/users/:id").get( async (request, response) => {
   }
 });
 
-// Create new user (Sign Up)
+// Create new user (Sign Up) - Public route
 userRoutes.route("/users").post(async (request, response) => {
   try {
     let db = database.getDb();
@@ -107,10 +122,18 @@ userRoutes.route("/users").post(async (request, response) => {
   }
 });
 
-// Update user
-userRoutes.route("/users/:id").put(async (request, response) => {
+// Update user (protected route)
+userRoutes.route("/users/:id").put(authenticateToken, async (request, response) => {
   try {
     let db = database.getDb();
+    
+    // Check if user is updating their own profile or is admin
+    if (request.user.userId !== request.params.id) {
+      return response.status(403).json({ 
+        success: false, 
+        message: "You can only update your own profile" 
+      });
+    }
     
     const updateData = {};
     if (request.body.name) updateData.name = request.body.name.trim();
@@ -142,10 +165,19 @@ userRoutes.route("/users/:id").put(async (request, response) => {
   }
 });
 
-// Delete user
-userRoutes.route("/users/:id").delete(async (request, response) => {
+// Delete user (protected route)
+userRoutes.route("/users/:id").delete(authenticateToken, async (request, response) => {
   try {
     let db = database.getDb();
+    
+    // Check if user is deleting their own account or is admin
+    if (request.user.userId !== request.params.id) {
+      return response.status(403).json({ 
+        success: false, 
+        message: "You can only delete your own account" 
+      });
+    }
+    
     let result = await db.collection("users").deleteOne({ _id: new ObjectId(request.params.id) });
 
     if (result.deletedCount === 0) {
@@ -163,12 +195,9 @@ userRoutes.route("/users/:id").delete(async (request, response) => {
   }
 });
 
-// User login
-// Update the login route
+// User login - Public route
 userRoutes.route("/users/login").post(async (request, response) => {
   try {
-   
-    
     console.log('Login attempt started');
     console.log('Request body:', request.body);
     

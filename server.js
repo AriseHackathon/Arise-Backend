@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445
 const express = require("express");
 const cors = require("cors");
 const connect = require("./connect");

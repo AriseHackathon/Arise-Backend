@@ -239,4 +239,11 @@ function verifyToken(request, response, next) {
    })
 }
 
+gameRoutes.route("/verify-token").get(verifyToken, async (request, response) => {
+    response.json({ 
+        valid: true, 
+        user: request.body.user 
+    });
+});
+
 module.exports = gameRoutes

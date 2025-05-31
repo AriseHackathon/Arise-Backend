@@ -66,7 +66,3 @@ app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
 });
-<<<<<<< HEAD
-=======
-
->>>>>>> fdfd10f9a4fff0b088e18a777469f86ef762a445

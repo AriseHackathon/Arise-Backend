@@ -6,7 +6,7 @@ require("dotenv").config({path: "./config.env"})
 
 
 
-//Retrive all data from database
+//Retrive all data 
 let postRoutes = express.Router()
 
 postRoutes.route("/posts").get(async (request, response) => {
@@ -17,14 +17,14 @@ postRoutes.route("/posts").get(async (request, response) => {
     if (data.length > 0) {
        response.json(data)
     } else {
-       response.json([]) // Return empty array instead of throwing error
+       response.json([]) 
     }
   } catch (error) {
     response.status(500).json({ error: error.message })
   }
 })
 
- //Retrive one data from database
+ //Retrive one data 
 
 
 postRoutes.route("/posts/:id").get( async (request,response) => {
@@ -41,7 +41,7 @@ postRoutes.route("/posts/:id").get( async (request,response) => {
 })
 
 
- //Create one data in database
+ //Create one data
 
 
  postRoutes.route("/posts").post( async (request,response) => {
@@ -60,7 +60,7 @@ postRoutes.route("/posts/:id").get( async (request,response) => {
 
 
 
-  //Update one data in database
+  //Update one data 
 
 
   postRoutes.route("/posts/:id").put( async (request,response) => {
@@ -80,7 +80,7 @@ postRoutes.route("/posts/:id").get( async (request,response) => {
   })
 
   
-  //Delete one data from database
+  //Delete one data 
 
 
 postRoutes.route("/posts/:id").delete( async (request,response) => {

@@ -2,6 +2,8 @@ const express = require("express");
 const database = require("./connect");
 const { ObjectId } = require("mongodb");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require("dotenv").config({path: "./config.env"});
 
 // Create router instance
 let userRoutes = express.Router();
@@ -164,41 +166,73 @@ userRoutes.route("/users/:id").delete(async (request, response) => {
 // User login
 userRoutes.route("/users/login").post(async (request, response) => {
   try {
+    console.log('Login attempt started');
+    console.log('Request body:', request.body);
+    
     let db = database.getDb();
+    console.log('Database connection obtained');
     
     const { email, password } = request.body;
     
     if (!email || !password) {
+      console.log('Missing email or password');
       return response.status(400).json({ 
         success: false, 
         message: "Email and password are required" 
       });
     }
 
-    // Find user by email
+    console.log('Searching for user with email:', email.toLowerCase().trim());
     const user = await db.collection("users").findOne({ email: email.toLowerCase().trim() });
 
     if (!user) {
+      console.log('User not found');
       return response.status(401).json({ 
         success: false, 
         message: "Invalid email or password" 
       });
     }
 
-    // Verify password
+    console.log('User found, comparing passwords');
     const isPasswordValid = await bcrypt.compare(password, user.password);
     
     if (!isPasswordValid) {
+      console.log('Password validation failed');
       return response.status(401).json({ 
         success: false, 
         message: "Invalid email or password" 
       });
     }
 
-    // Return success with user data (no token)
+    console.log('Password valid, generating JWT token');
+    
+    // Check if SECRETKEY exists
+    if (!process.env.SECRETKEY) {
+      console.error('SECRETKEY environment variable is not set');
+      return response.status(500).json({ 
+        success: false, 
+        message: "Server configuration error" 
+      });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id,
+        email: user.email,
+        name: user.name
+      },
+      process.env.SECRETKEY,
+      { expiresIn: '24h' }
+    );
+
+    console.log('JWT token generated successfully');
+
+    // Return success with user data AND token
     response.json({ 
       success: true, 
       message: "Login successful",
+      token: token, 
       user: {
         id: user._id,
         name: user.name,
@@ -208,12 +242,27 @@ userRoutes.route("/users/login").post(async (request, response) => {
     });
 
   } catch (error) {
-    console.error('Error during login:', error);
-    response.status(500).json({ 
-      success: false, 
-      message: "Internal server error" 
-    });
+    console.error('Detailed login error:', error);
+    console.error('Error stack:', error.stack);
+    
+    // More specific error responses
+    if (error.name === 'MongoError' || error.name === 'MongoServerError') {
+      response.status(500).json({ 
+        success: false, 
+        message: "Database connection error" 
+      });
+    } else if (error.name === 'JsonWebTokenError') {
+      response.status(500).json({ 
+        success: false, 
+        message: "Token generation error" 
+      });
+    } else {
+      response.status(500).json({ 
+        success: false, 
+        message: "Internal server error",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
   }
 });
-
 module.exports = userRoutes;

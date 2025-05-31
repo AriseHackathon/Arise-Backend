@@ -15,12 +15,15 @@ const client = new MongoClient(process.env.ATLAS_URI, {
 let database
 
 module.exports = {
- connectToServer: () => {
+ connectToServer: async () => {
+  await client.connect(); 
   database = client.db("ariseData")
- },
+},
  getDb: () => {
   return database
  }
 
 }
+
+
 

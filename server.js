@@ -10,20 +10,20 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// CORS configuration
+// CORS 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://127.0.0.1:5500'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://arise-backend-m9zz.onrender.com', 'https://games-grid.netlify.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
-// Middleware
+
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Request logging middleware
+
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
   next();
@@ -34,7 +34,7 @@ app.use(users);
 app.use(games); 
 app.use(posts)
 
-// Health check endpoint
+
 app.get('/health', (req, res) => {
   res.json({ 
     success: true, 
@@ -43,7 +43,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// 404 handler
+
 app.use('*', (req, res) => {
   res.status(404).json({ 
     success: false, 
@@ -51,7 +51,7 @@ app.use('*', (req, res) => {
   });
 });
 
-// Global error handler
+
 app.use((error, req, res, next) => {
   console.error('Global error handler:', error);
   res.status(500).json({ 
@@ -62,7 +62,7 @@ app.use((error, req, res, next) => {
 
 // Start server
 app.listen(PORT, () => {
-  connect.connectToServer();
+ connect.connectToServer();
   console.log(`Server is running on port: ${PORT}`);
   console.log(`Health check available at: http://localhost:${PORT}/health`);
 });

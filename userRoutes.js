@@ -2,6 +2,8 @@ const express = require("express");
 const database = require("./connect");
 const { ObjectId } = require("mongodb");
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require("dotenv").config({path: "./config.env"});
 
 // Create router instance
 let userRoutes = express.Router();
@@ -162,6 +164,7 @@ userRoutes.route("/users/:id").delete(async (request, response) => {
 });
 
 // User login
+// Update the login route
 userRoutes.route("/users/login").post(async (request, response) => {
   try {
     let db = database.getDb();
@@ -175,7 +178,6 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
-    // Find user by email
     const user = await db.collection("users").findOne({ email: email.toLowerCase().trim() });
 
     if (!user) {
@@ -185,7 +187,6 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
-    // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     
     if (!isPasswordValid) {
@@ -195,10 +196,22 @@ userRoutes.route("/users/login").post(async (request, response) => {
       });
     }
 
-    // Return success with user data (no token)
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        userId: user._id,
+        email: user.email,
+        name: user.name
+      },
+      process.env.SECRETKEY,
+      { expiresIn: '24h' }
+    );
+
+    // Return success with user data AND token
     response.json({ 
       success: true, 
       message: "Login successful",
+      token: token, 
       user: {
         id: user._id,
         name: user.name,
@@ -215,5 +228,6 @@ userRoutes.route("/users/login").post(async (request, response) => {
     });
   }
 });
+
 
 module.exports = userRoutes;

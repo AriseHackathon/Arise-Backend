@@ -5,7 +5,7 @@ const users = require("./userRoutes");
 const posts = require("./postRoutes"); 
 const games = require("./gameRoutes"); 
 require("dotenv").config({ path: "./config.env" });
-require("dotenv").config();
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 // Routes
 app.use(users);
 app.use(games); 
-app.use(posts)
+app.use(posts);
 
 
 app.get('/health', (req, res) => {

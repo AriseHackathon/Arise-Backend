@@ -167,14 +167,7 @@ userRoutes.route("/users/:id").delete(async (request, response) => {
 // Update the login route
 userRoutes.route("/users/login").post(async (request, response) => {
   try {
-    console.log('=== DEBUGGING ENVIRONMENT VARIABLES ===');
-    console.log('NODE_ENV:', process.env.NODE_ENV);
-    console.log('PORT:', process.env.PORT);
-    console.log('ATLAS_URI exists:', !!process.env.ATLAS_URI);
-    console.log('SECRETKEY exists:', !!process.env.SECRETKEY);
-    console.log('SECRETKEY length:', process.env.SECRETKEY ? process.env.SECRETKEY.length : 0);
-    console.log('Current working directory:', process.cwd());
-    console.log('=== END DEBUG INFO ===');
+   
     
     console.log('Login attempt started');
     console.log('Request body:', request.body);
@@ -272,3 +265,5 @@ userRoutes.route("/users/login").post(async (request, response) => {
     }
   }
 });
+
+module.exports = userRoutes;

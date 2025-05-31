@@ -4,7 +4,7 @@ const connect = require("./connect");
 const users = require("./userRoutes");
 const posts = require("./postRoutes"); 
 const games = require("./gameRoutes"); 
-
+require("dotenv").config({ path: "./config.env" });
 require("dotenv").config();
 
 const app = express();
